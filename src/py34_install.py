@@ -12,8 +12,8 @@ from subprocess import call, check_output, Popen, PIPE
 
 PYTHON34_HOME = '/opt/python34'
 
-PYTHON34_DOWNLOAD_URL='http://python.org/ftp/python/3.4.0/Python-3.4.0a2.tar.xz'
-PYTHON34_MD5_CHECKSUM='36c941d1466730a70d0ae92442cc3fcf'
+PYTHON34_DOWNLOAD_URL='https://www.python.org/ftp/python/3.4.1/Python-3.4.1.tgz'
+PYTHON34_MD5_CHECKSUM='26695450087f8587b26d0b6a63844af5'
 
 DEPS = {}
 DEPS['Ubuntu'] = {}
@@ -134,11 +134,19 @@ def ensure_packages_installed(packages, install_packages=True):
         else:
             print('Missing packages: {}'.format(','.join(missing)))
             exit(1)
+
+def get_extracted_dir():
+    src_fname = get_source_filename()
+    dir_fname = '.'.join(src_fname.split(os.sep)[-1].split('.')[:-1])
+    return os.sep.join((build_directory(), dir_fname))
             
 def ensure_python34_built(install_directory):
     build_dir = build_directory()
     if os.path.exists(build_dir):
         shutil.rmtree(build_dir)
+
+    if os.path.exists(install_directory):
+        shutil.rmtree(install_directory)
         
     log_filepath = os.path.sep.join((build_dir, 'errors.log'))
         
@@ -150,8 +158,8 @@ def ensure_python34_built(install_directory):
         sfile = get_source_filepath()
         print('Extracting {}..'.format(sfile), end='') ; sys.stdout.flush()
         
-        with open('/dev/null', 'w+') as devnull:
-            status = call(['tar', 'xf', sfile, '-C', build_dir], timeout=10, stdout=devnull, stderr=devnull)
+        with open(log_filepath, 'w+') as output:
+            status = call(['tar', 'xf', sfile, '-C', build_dir], timeout=10, stdout=output, stderr=output)
             if status != 0:
                 print('error')
                 print('Could not extract files to {}'.format(build_dir))
@@ -161,8 +169,7 @@ def ensure_python34_built(install_directory):
         
         # compile
         
-        dir_name = '.'.join(get_source_filename().split('.')[:-2])
-        src_dir = os.path.sep.join((build_dir, dir_name))
+        src_dir = get_extracted_dir()
         os.chdir(src_dir)
         
         print('Configuring sources...', end='') ; sys.stdout.flush()
@@ -191,6 +198,15 @@ def ensure_python34_built(install_directory):
         else:
             print('done')
         
+        with open(log_filepath, 'a') as output:
+            status = call(['make', 'install'], timeout=300, stdout=output, stderr=output)
+            
+        if status != 0:
+            print('error')
+            print('Could not install python3 in {}'.format(src_dir))
+            exit(1)
+        else:
+            print('done')
     else:
         print('Could not empty {} directory'.format(build_dir))
         exit(1)            
