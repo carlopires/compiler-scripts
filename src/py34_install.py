@@ -27,6 +27,16 @@ DEPS['Ubuntu']['13.10'] = ('build-essential',
     'libncurses5', 'libncurses5-dev',
     'libreadline6', 'libreadline6-dev')
 
+DEPS['Ubuntu']['14.04'] = ('build-essential',  
+    'libreadline6-dev', 
+    'zlib1g-dev', 'libbz2-dev', 'liblzma-dev',
+    'libgdbm-dev', 'libdb-dev', 'libssl-dev',
+    'libexpat1-dev', 'libmpdec-dev',
+    'libbluetooth-dev', 'locales',
+    'libsqlite3-dev', 'libffi-dev',
+    'libgpm2', 'mime-support', 'netbase', 'bzip2', 
+    'net-tools', 'xvfb', 'xauth')
+
 def user_home():
     return os.path.expanduser('~')
 
