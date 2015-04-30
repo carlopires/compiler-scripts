@@ -450,7 +450,9 @@ def users_home():
     names = user_home().split(os.path.sep)
     if names[-1] == os.environ.get('USER'):
         names = names[:-1]
-    return os.path.sep.join(['.'] + names)
+    if names[0] == '':
+        names = names[1:]
+    return os.path.sep + os.path.sep.join(names)
 
 
 def source_directory():
@@ -576,10 +578,16 @@ def get_extracted_dir():
 def ensure_python34_built(install_directory):
     build_dir = build_directory()
     if os.path.exists(build_dir):
-        shutil.rmtree(build_dir)
+        if input('Yes to remove old {}?'.format(build_dir)) == 'Yes':
+            shutil.rmtree(build_dir)
+        else:
+            exit(1)
 
     if os.path.exists(install_directory):
-        shutil.rmtree(install_directory)
+        if input('Yes to remove old {}?'.format(install_directory)) == 'Yes':
+            shutil.rmtree(install_directory)
+        else:
+            exit(1)
 
     log_filepath = os.path.sep.join((build_dir, 'errors.log'))
 
@@ -666,7 +674,7 @@ def main(install_directory):
 if __name__ == "__main__":
     parser = \
         argparse.ArgumentParser(prog='py34-install',
-                                description='Compile and install Python3.4')
+                                description='Compile and install Python 3.4.3')
 
     parser.add_argument('--install-directory',
                         type=str,
