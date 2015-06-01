@@ -569,7 +569,7 @@ def ensure_packages_installed(packages, install_packages=True):
     if missing:
         if install_packages:
             for pkg in missing:
-                status = call(['apt-get', 'install', '-y', pkg], timeout=30)
+                status = call(['apt-get', 'install', '-y', pkg], timeout=300)
                 if status != 0:
                     print('Could not install {} package'.format(pkg))
                     exit(1)
