@@ -408,6 +408,16 @@ DEPS = {}
 
 DEPS['Debian'] = {}
 
+DEPS['Debian']['8.0'] = ('build-essential',
+                         'openssl', 'libssl-dev',
+                         'libsqlite3-0', 'libsqlite3-dev',
+                         'libbz2-1.0', 'libbz2-dev',
+                         'libdb5.3', 'libdb-dev',
+                         'libgdbm3', 'libgdbm-dev',
+                         'liblzma5', 'liblzma-dev',
+                         'libncurses5', 'libncurses5-dev',
+                         'libreadline6', 'libreadline6-dev')
+
 DEPS['Debian']['7.8'] = ('build-essential',
                          'openssl', 'libssl-dev',
                          'libsqlite3-0', 'libsqlite3-dev',
