@@ -572,7 +572,7 @@ def ensure_packages_installed(packages, install_packages=True):
     if missing:
         if install_packages:
             for pkg in missing:
-                status = call(['apt-get', 'install', '-y', pkg], timeout=300)
+                status = call(['apt-get', 'install', '-y', pkg], timeout=600)
                 if status != 0:
                     print('Could not install {} package'.format(pkg))
                     exit(1)
@@ -638,7 +638,7 @@ def ensure_python34_built(install_directory):
                            '--prefix={}'.format(install_directory),
                            '--disable-ipv6',
                            '--with-dbmliborder=bdb:gdbm'],
-                          timeout=300, stdout=output, stderr=output)
+                          timeout=600, stdout=output, stderr=output)
 
         if status != 0:
             print('error')
@@ -651,7 +651,7 @@ def ensure_python34_built(install_directory):
         sys.stdout.flush()
 
         with open(log_filepath, 'a') as output:
-            status = call(['make'], timeout=300, stdout=output, stderr=output)
+            status = call(['make'], timeout=600, stdout=output, stderr=output)
 
         if status != 0:
             print('error')
@@ -662,7 +662,7 @@ def ensure_python34_built(install_directory):
 
         with open(log_filepath, 'a') as output:
             status = call(['make', 'install'],
-                          timeout=300, stdout=output, stderr=output)
+                          timeout=600, stdout=output, stderr=output)
 
         if status != 0:
             print('error')
