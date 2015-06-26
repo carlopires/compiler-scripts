@@ -31,6 +31,7 @@ RELEASE_CODENAME_LOOKUP = {
     '6.0': 'squeeze',
     '7.0': 'wheezy',
     '8.0': 'jessie',
+    '8.1': 'jessie',
     }
 
 TESTING_CODENAME = 'unknown.new.testing'
@@ -418,6 +419,8 @@ DEPS['Debian']['8.0'] = ('build-essential',
                          'libncurses5', 'libncurses5-dev',
                          'libreadline6', 'libreadline6-dev')
 
+DEPS['Debian']['8.1'] = DEPS['Debian']['8.0']
+
 DEPS['Debian']['7.8'] = ('build-essential',
                          'openssl', 'libssl-dev',
                          'libsqlite3-0', 'libsqlite3-dev',
@@ -549,7 +552,7 @@ def ensure_distribution_supported():
         if dist_rel:
             return dist_rel
         else:
-            print('This release of {} is not supported'.format(dist))
+            print('This release of {} is not supported'.format(lsb))
             exit(1)
     else:
         print('This Linux Distribution is not supported')
